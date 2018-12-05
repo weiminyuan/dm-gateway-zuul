@@ -1,0 +1,16 @@
+server:
+  port: 7600
+spring:
+  application:
+    name: dm-gateway-zuul
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://root:123456@localhost:8761/eureka/
+zuul:
+  routes:
+    dm-user-customer: /user/**
+# 关闭过滤器 zuul 子项
+#  SecondFilter:
+#    pre:
+#      disable: true
