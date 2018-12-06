@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: dm-gateway-zuul
+  cloud:
+    config:
+      uri: http://localhost:7900
+      profile: dev
+      label: springcloud
+# config server 地址
+# application name + profile版本（dev开发，pro生产）
+# 分支

@@ -4,6 +4,8 @@ import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import com.netflix.zuul.exception.ZuulException;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.cloud.netflix.zuul.filters.support.FilterConstants;
 import org.springframework.stereotype.Component;
 
@@ -18,7 +20,11 @@ import javax.servlet.http.HttpServletResponse;
  * @Date: 2018/12/4 17:14
  */
 @Component //注册
+@RefreshScope //重写注入
 public class PreFilter extends ZuulFilter{
+    @Value("${token}")
+    private boolean token;
+
     /**
      * 类型
      * pre 前处理
@@ -61,10 +67,17 @@ public class PreFilter extends ZuulFilter{
         HttpServletRequest request = ctx.getRequest();
         HttpServletResponse response = ctx.getResponse();
         response.setCharacterEncoding("utf-8");
-        String token = request.getHeader("token");
+        String tokens = request.getHeader("token");
         String key = request.getParameter("key");
         //token登录信息（可以在redis里面存在）
-        if (StringUtils.isEmpty(token) || "1".equals(key)){
+        System.out.println("========================"+token+"=========================");
+        if(token){
+            System.out.println("ok");
+        }else {
+            System.out.println("fail");
+        }
+
+        if (StringUtils.isEmpty(tokens) || "1".equals(key)){
             ctx.setSendZuulResponse(false);//不会走后面的过滤器
             ctx.setResponseStatusCode(401);//返回状态
             ctx.setResponseBody("{\"code\":\"401\",\"message\":\"未登录PreFilter拦截\"}");

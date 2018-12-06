@@ -1,8 +1,5 @@
 server:
   port: 7600
-spring:
-  application:
-    name: dm-gateway-zuul
 eureka:
   client:
     serviceUrl:
@@ -10,6 +7,12 @@ eureka:
 zuul:
   routes:
     dm-user-customer: /user/**
+# 修改git config文件，不需要启动文件，自动刷新
+management:
+  endpoints:
+    web:
+      exposure:
+        include: dev
 # 关闭过滤器 zuul 子项
 #  SecondFilter:
 #    pre:
